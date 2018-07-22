@@ -1,0 +1,27 @@
+https://www.codeproject.com/Articles/325776/The-Art-of-Win-Shellcoding 
+
+https://dhavalkapil.com/blogs/Shellcode-Injection/
+https://www.exploit-db.com/exploits/42977/
+
+https://www.scriptjunkie.us/2012/01/direct-shellcode-execution-in-ms-office-macros/
+
+https://github.com/OsandaMalith/Shellcodes
+
+************* Set Window Hook etc
+
+https://docs.microsoft.com/de-de/windows/desktop/api/winuser/nf-winuser-setwineventhook
+https://docs.microsoft.com/en-us/windows/desktop/winmsg/about-hooks
+https://docs.microsoft.com/de-de/windows/desktop/winmsg/using-hooks#installing_releasing
+
+
+***** Excel collections
+
+https://excelmacromastery.com/excel-vba-collections/
+
+------
+
+dd: convert a compiled binary directly into shellcode
+
+-----
+
+http://www.projectshellcode.com/downloads/shellcode-compiler.sh 
