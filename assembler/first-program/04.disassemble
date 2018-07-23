@@ -1,0 +1,6 @@
+#
+#  -d dissasemble
+#
+#  -M intel: display instructions in intel syntax
+#
+objdump -M intel -d first
