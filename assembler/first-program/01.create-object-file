@@ -1,0 +1,1 @@
+asm -f elf64 first.asm

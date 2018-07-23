@@ -1,0 +1,1 @@
+ld -m elf_x86_64 first.o -o first
