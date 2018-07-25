@@ -1,0 +1,2 @@
+# gcc prog.o -nostartfiles -nodefaultlibs -static   -Wno-abi -DMIPS -Wall -o prog
+  gcc prog.o                                                              -o prog

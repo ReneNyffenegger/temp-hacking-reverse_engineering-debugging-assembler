@@ -1,0 +1,3 @@
+    Create prog.s
+#
+gcc -S prog.c
