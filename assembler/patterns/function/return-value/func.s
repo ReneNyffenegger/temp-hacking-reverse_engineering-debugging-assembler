@@ -6,7 +6,7 @@
 
 func:
 #
-# The function value is return in the eax register.
+# Standard ABI: function values are returned in the eax register.
 #
   mov eax, 42
   ret
