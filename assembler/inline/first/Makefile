@@ -1,4 +1,4 @@
-first: first.o
+a.out: first.o
 	gcc first.o
 
 first.o: first.c
