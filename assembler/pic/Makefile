@@ -19,9 +19,6 @@ code.s: code_.s
 code_pic.s: code_pic_.s
 	sed -f ../rm-instr.sed $< > $@
 
-code.s: code_.s
-	sed -f ../rm-instr.sed $< > $@
-
 code_pic_.s : code.c Makefile
 	gcc -fpic    -S $< -o $@
 
