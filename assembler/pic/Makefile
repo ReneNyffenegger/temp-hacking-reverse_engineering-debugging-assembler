@@ -1,5 +1,5 @@
 all: code.disassembled code_pic.disassembled
-	diff code_pic.s code.s
+	diff code_pic.s code.s || true
 
 code.disassembled: code.o
 	objdump --disassemble $< > $@
