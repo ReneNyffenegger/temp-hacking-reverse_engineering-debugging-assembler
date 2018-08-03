@@ -1,2 +1,3 @@
 *.o
-first
+first.gnu.att
+first.nasm
