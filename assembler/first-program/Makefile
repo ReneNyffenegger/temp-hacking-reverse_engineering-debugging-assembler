@@ -10,4 +10,5 @@ first.gnu.att.o: first.gnu.att.s Makefile
 	gcc -masm=att -c $< -o $@
 
 first.nasm.o: first.asm Makefile
-	nasm -f elf64 $< -o $@
+	# use -l to create a listing file
+	nasm -f elf64 -l first.nasm.lst $< -o $@
