@@ -16,8 +16,9 @@ main:             ; Entry point for main.
 ; insert program  ;
 ; here            ;
 ;                 ;
+  mov  eax,   1   ;
                   ;
-  mov  eax,  42   ; Return value.
+  mov  eax,   0   ; Return value.
                   ;
   leave           ; Clean up stack frame. 
   ret             ;
