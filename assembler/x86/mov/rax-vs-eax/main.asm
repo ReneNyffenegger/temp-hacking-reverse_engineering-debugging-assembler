@@ -18,9 +18,7 @@ main:             ; Entry point for main.
 
   mov  rax, 0x012345789abcdef
 
-  mov  eax, 0xaaaaaaaa
-; mov  eax, 3
-
+  mov  eax, 0xaaaaaaaa         ; Although only the lower 32 bits are specified, the upper 32 bits are silently overwritten with zeroes.
 
                   ;
   mov  eax,   0   ; Return value.
