@@ -18,13 +18,17 @@ stepi
 echo "------------\n"
 x/i $pc
 stepi
-p/x  $rax
+
+# p/x  $rax
+printf "rax = %016lx\n", $rax
 
 
 echo "------------\n"
 x/i $pc
 stepi
-p/x  $rax
+
+#p/x  $rax
+printf "rax = %016lx\n", $rax
 
 continue
 
