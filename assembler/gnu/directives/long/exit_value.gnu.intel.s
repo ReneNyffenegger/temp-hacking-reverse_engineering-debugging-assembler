@@ -10,5 +10,5 @@
 _start:
 
 mov eax,    1
-mov ebx,   exit_value
+mov ebx,   exit_value # Apparently move ebx, [exit_value] would work too (seems to be the canonical way…)
 int      0x80
