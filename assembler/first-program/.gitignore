@@ -1,4 +1,5 @@
 *.o
 first.gnu.att
+first.gnu.intel
 first.nasm
 first.nasm.lst
