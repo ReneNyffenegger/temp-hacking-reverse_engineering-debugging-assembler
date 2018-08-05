@@ -1,2 +1,4 @@
+*.o
 main.lst
 main.nasm
+main.gnu.intel

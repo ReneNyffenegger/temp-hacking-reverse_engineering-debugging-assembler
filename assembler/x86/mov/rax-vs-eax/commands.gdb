@@ -6,16 +6,18 @@ set height 0
 set verbose off
 set disassembly-flavor intel
 
-b main
+b _start
 r
 
-# echo "------------\n"
-# x/i $pc
 stepi
-# p/x  $rax
-# # info register $rax
 
 echo "------------\n"
+printf "rax = %016lx\n", $rax
+x/i $pc
+stepi
+
+echo "------------\n"
+printf "rax = %016lx\n", $rax
 x/i $pc
 stepi
 
@@ -27,30 +29,7 @@ echo "------------\n"
 x/i $pc
 stepi
 
-#p/x  $rax
 printf "rax = %016lx\n", $rax
 
+# End the program
 continue
-
-# echo "------------\n"
-# x/i $pc
-# stepi
-# p/x  $rax
-# 
-# 
-# echo "------------\n"
-# x/i $pc
-# stepi
-# p/x  $rax
-# 
-# 
-# echo "------------\n"
-# x/i $pc
-# stepi
-# p/x  $rax
-# 
-# 
-# echo "------------\n"
-# x/i $pc
-# stepi
-# p/x  $rax

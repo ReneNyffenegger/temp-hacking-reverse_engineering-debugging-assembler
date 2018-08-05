@@ -16,7 +16,7 @@ main:             ; Entry point for main.
 ; insert program  ;
 ; here            ;
 
-  mov  rax, 0x012345789abcdef
+  mov  rax, 0x0123456789abcdef
 
   mov  eax, 0xaaaaaaaa         ; Although only the lower 32 bits are specified, the upper 32 bits are silently overwritten with zeroes.
 
