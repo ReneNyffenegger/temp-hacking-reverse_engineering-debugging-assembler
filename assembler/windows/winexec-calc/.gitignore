@@ -1,2 +1,3 @@
 exec.obj
 winexec.exe
+*.o
