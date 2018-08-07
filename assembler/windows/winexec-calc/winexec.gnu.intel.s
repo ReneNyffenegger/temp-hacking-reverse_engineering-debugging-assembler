@@ -1,3 +1,6 @@
+#
+#      TODO: https://securitycafe.ro/2016/02/15/introduction-to-windows-shellcode-development-part-3/
+#
 .intel_syntax noprefix
 
 .section .text
