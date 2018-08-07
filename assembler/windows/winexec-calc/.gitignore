@@ -1,3 +1,5 @@
 exec.obj
 winexec.exe
+*.bin
+*.hex
 *.o
