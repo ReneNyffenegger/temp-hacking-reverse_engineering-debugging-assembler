@@ -6,7 +6,8 @@
 //
 
 
-unsigned int eax, ebx, ecx, edx;
+// unsigned int eax, ebx, ecx, edx;
+unsigned int r_eax, r_ebx, r_ecx, r_edx;
 int maxFuncNr = 0;
 
 void cpuid(unsigned int func_no) {
@@ -22,7 +23,7 @@ void cpuid(unsigned int func_no) {
     "mov  %2   , ecx       \n"
     "mov  %3   , edx       \n"
   //"----------------------\n"
-    :"=m"(eax), "=m"(ebx), "=m"(ecx),"=m"(edx)
+    :"=m"(r_eax), "=m"(r_ebx), "=m"(r_ecx),"=m"(r_edx)
     :"m"(func_no)
     :"eax", "ebx", "edx", "ecx"
   );
@@ -31,7 +32,7 @@ void cpuid(unsigned int func_no) {
 
 }
 
-inline unsigned int extractBits(unsigned int val, int start, int endIncl) {
+/* inline */ unsigned int extractBits(unsigned int val, int start, int endIncl) {
 
   unsigned int bits = (1 << (endIncl-start+1)) - 1;
 //printf("bits: %d\n", bits);
@@ -45,37 +46,37 @@ inline unsigned int extractBits(unsigned int val, int start, int endIncl) {
 int main(int argc, char **argv) {
   static char cpu_vendor[13];
 
-  printf("%d\n", extractBits(255, 3, 4));
+//printf("%d\n", extractBits(255, 3, 4));
 
 
 
   cpuid(0);
 
-    maxFuncNr= eax;
+    maxFuncNr= r_eax;
 
     printf("Max func nr: %d\n", maxFuncNr);
 
-    memcpy((void*) cpu_vendor  , (void*) &ebx, 4); // Note the order of the
-    memcpy((void*) cpu_vendor+4, (void*) &edx, 4); // registers: ebx, edx, ecx
-    memcpy((void*) cpu_vendor+8, (void*) &ecx, 4); //
+    memcpy((void*) cpu_vendor  , (void*) &r_ebx, 4); // Note the order of the
+    memcpy((void*) cpu_vendor+4, (void*) &r_edx, 4); // registers: ebx, edx, ecx
+    memcpy((void*) cpu_vendor+8, (void*) &r_ecx, 4); //
   
     printf("Vendorname : %s\n", cpu_vendor);
 
   cpuid(1);
-    printf("stepping id:     %d\n", extractBits(eax,  0,  3));
-    printf("Model Nr:        %d\n", extractBits(eax,  4,  7));
-    printf("Family code:     %d\n", extractBits(eax,  8, 11));
-    printf("Processor type:  %d\n", extractBits(eax, 12, 13));
-    printf("Extended model:  %d\n", extractBits(eax, 16, 19));
-    printf("Extended family: %d\n", extractBits(eax, 20, 27));
+    printf("stepping id:     %d\n", extractBits(r_eax,  0,  3));
+    printf("Model Nr:        %d\n", extractBits(r_eax,  4,  7));
+    printf("Family code:     %d\n", extractBits(r_eax,  8, 11));
+    printf("Processor type:  %d\n", extractBits(r_eax, 12, 13));
+    printf("Extended model:  %d\n", extractBits(r_eax, 16, 19));
+    printf("Extended family: %d\n", extractBits(r_eax, 20, 27));
 
     printf("\n");
 
-    printf("TSC             : %d\n", extractBits(edx,  4, 4)); /* Time stamp counter */
-    printf("sysenter/sysexit: %d\n", extractBits(edx, 11,11));
-    printf("Thermal monitor : %d\n", extractBits(edx, 22,22));
+    printf("TSC             : %d\n", extractBits(r_edx,  4, 4)); /* Time stamp counter */
+    printf("sysenter/sysexit: %d\n", extractBits(r_edx, 11,11));
+    printf("Thermal monitor : %d\n", extractBits(r_edx, 22,22));
 
-    printf("AES             : %d\n", extractBits(ecx, 25,25));
+    printf("AES             : %d\n", extractBits(r_ecx, 25,25));
 
   return 0;
 }
