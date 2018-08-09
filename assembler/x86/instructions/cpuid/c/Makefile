@@ -1,7 +1,13 @@
-all: a.out
-	@a.exe
+ifeq ($(OS), Windows_NT)
+	EXECUTABLE=a.exe
+else
+	EXECUTABLE=./a.out
+endif
 
-a.out: cpuid.s
+all: $(EXECUTABLE)
+	@$(EXECUTABLE)
+
+$(EXECUTABLE): cpuid.s
 	@gcc -masm=intel $<
 
 cpuid.s: cpuid.c  Makefile
