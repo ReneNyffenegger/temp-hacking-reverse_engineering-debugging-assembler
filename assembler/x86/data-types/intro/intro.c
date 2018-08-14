@@ -23,6 +23,10 @@ int main() {
   size_of_datatype(        double);
   size_of_datatype(  long  double);
 
+  size_of_datatype(      __int128);
+//size_of_datatype(      __m64   );
+//size_of_datatype(      __m128  );
+
   size_of_datatype(         void*);
 
 //size_of_datatype(          enum);
