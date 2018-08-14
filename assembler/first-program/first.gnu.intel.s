@@ -1,7 +1,7 @@
 .intel_syntax noprefix
 
 .section .text
-  .globl _start
+  .globl _start ; Entry point for ELF. _start is default. Use ld -e other_entry_point to override.
 
 _start:
 
