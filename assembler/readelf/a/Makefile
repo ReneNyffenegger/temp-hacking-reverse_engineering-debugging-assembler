@@ -8,7 +8,7 @@ a.out: main.o f.o
 
 main.o: main.c f.h
 	gcc -c $< -o $@
+	readelf -a $@
 
 f.o: f.c
 	gcc -c $< -o $@
-
