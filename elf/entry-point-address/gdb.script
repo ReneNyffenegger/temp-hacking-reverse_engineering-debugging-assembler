@@ -1,0 +1,9 @@
+set width 0
+set height 0
+set verbose off
+
+b _start
+
+run
+
+print $eip
