@@ -1,6 +1,12 @@
+.PHONY: objdump_h_a.out
+
+all: objdump_h_a.out
+
+objdump_h_a.out: a.out
+	objdump -h $<
+
 a.out: main.o the_num.o
-	gcc $^ -o $@
-	objdump -h $@
+	@gcc $^ -o $@
 
 
 main.o: main.c
