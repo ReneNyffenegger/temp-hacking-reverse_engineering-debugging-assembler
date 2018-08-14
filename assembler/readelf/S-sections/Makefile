@@ -1,6 +1,6 @@
 a.out: main.o the_num.o
 	gcc $^ -o $@
-	readelf -s $@
+	readelf -S $@
 
 main.o: main.c
 	gcc -c $< -o $@
