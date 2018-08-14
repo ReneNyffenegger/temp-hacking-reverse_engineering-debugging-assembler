@@ -1,1 +1,1 @@
-int f(int);
+int sum_array(int*, int len);

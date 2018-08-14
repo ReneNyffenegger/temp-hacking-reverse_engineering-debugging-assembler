@@ -1,5 +1,9 @@
 #include "f.h"
 
-int f(int a) {
-  return 3*a;
+int sum_array(int* a, int len) {
+  int s = 0;
+  for (int i=0; i<len;i++) {
+    s += a[i];
+  }
+  return s;
 }
