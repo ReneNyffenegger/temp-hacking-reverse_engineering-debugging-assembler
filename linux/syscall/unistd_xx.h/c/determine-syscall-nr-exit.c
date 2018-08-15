@@ -1,9 +1,10 @@
 #include <stdio.h>
-#include <sys/syscall.h>
+
+#include <unistd.h>
+#include <sys/syscall.h>  // SYS_* definitions
 
 int main() {
 
-  printf ("SYS_exit = %d\n", SYS_exit);
 
   #ifdef __i386__
     printf ("__i386__ is defined\n");
@@ -16,5 +17,11 @@ int main() {
   #else
     printf ("__ILP32__ is not defined\n");
   #endif
+
+  printf ("SYS_exit = %d\n", SYS_exit);
+
+  syscall(SYS_exit, 42);
+
+  printf("not reached\n");
 
 }
