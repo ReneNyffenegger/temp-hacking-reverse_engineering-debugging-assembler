@@ -12,7 +12,10 @@ int maxFuncNr = 0;
 
 void cpuid(unsigned int func_no) {
 
-  if (func_no > maxFuncNr) return;
+  if (func_no > maxFuncNr) {
+    printf("func_no %d > maxFuncNr\n", func_no);
+//  return;
+  }
 
   asm volatile (
   //"----------------------\n"
@@ -77,6 +80,12 @@ int main(int argc, char **argv) {
     printf("Thermal monitor : %d\n", extractBits(r_edx, 22,22));
 
     printf("AES             : %d\n", extractBits(r_ecx, 25,25));
+
+  cpuid(0x80000001); // ????
+    printf("64 bit:         : %d\n", extractBits(r_edx, 29,29));
+
+  cpuid(0x80000008); // ????
+    printf("Size phys mem   : %d\n", extractBits(r_eax,  0, 7));
 
   return 0;
 }
