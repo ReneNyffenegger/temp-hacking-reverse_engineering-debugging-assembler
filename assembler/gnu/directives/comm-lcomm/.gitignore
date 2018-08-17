@@ -1,0 +1,4 @@
+*.nm
+main.s
+main_.s
+symbols_.s
