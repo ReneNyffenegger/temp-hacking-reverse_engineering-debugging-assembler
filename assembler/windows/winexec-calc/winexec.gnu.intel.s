@@ -116,7 +116,7 @@ xor    esi,esi
 push   edx
 pop    esi
 
-     # baking up kernel32.dll base address
+     # backing up kernel32.dll base address
 xor    edi,edi
 push   ebx
 pop    edi
