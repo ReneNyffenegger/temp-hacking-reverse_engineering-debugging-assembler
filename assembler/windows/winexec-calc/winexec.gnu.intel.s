@@ -116,7 +116,7 @@ xor    esi,esi
 push   edx
 pop    esi
 
-     # baking up kernel32.dll base address
+     # backing up kernel32.dll base address
 xor    edi,edi
 push   ebx
 pop    edi
@@ -126,8 +126,8 @@ pop    edi
 # ? xor and push really necessary?
 #   xor    ecx,ecx
 #   push   ecx
-push   0x00636578
-push   0x456e6957
+push   0x00636578 #  exe
+push   0x456e6957 # EinW
 
 mov    ecx,esp
 

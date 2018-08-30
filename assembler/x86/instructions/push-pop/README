@@ -1,0 +1,6 @@
+push eax
+
+  is equivalent to 
+
+sub esp, 4
+mov [esp], eax
