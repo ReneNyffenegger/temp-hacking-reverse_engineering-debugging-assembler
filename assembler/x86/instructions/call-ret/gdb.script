@@ -1,0 +1,28 @@
+# http://sourceware.org/gdb/wiki/FAQ: to disable the
+# "---Type <return> to continue, or q <return> to quit---"
+# in batch mode:
+set width 0
+set height 0
+set verbose off
+set disassembly-flavor intel
+
+b _start
+
+printf "------------------------"
+r
+
+x/i $rip
+printf "rsp = %lx\n", $rsp
+
+
+printf "------------------------\n"
+si
+
+x/i $rip
+printf "rsp = %lx \n", $rsp
+
+printf "------------------------\n"
+si
+
+x/i $rip
+x/i $rsp
