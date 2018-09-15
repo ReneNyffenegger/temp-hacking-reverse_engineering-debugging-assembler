@@ -25,6 +25,14 @@ on windows: gcc -g stack_traces.c -limagehlp
   #include <execinfo.h>
 #endif
 
+#ifdef AS_DLL
+#define func_declspec     __declspec(dllexport)
+#define call_convention   __stdcall
+#else
+#define func_declspec
+#define call_convention
+#endif
+
 // void almost_c99_signal_handler(int sig)
 // {
 //   switch(sig)
@@ -84,6 +92,13 @@ int addr2line(char const * const program_name, void const * const addr)
 
 
 #ifdef _WIN32
+
+#ifdef AS_DLL 
+  #define notify_error(e) MessageBox(0, #e, 0, 0);
+#else
+  #define notify_error(e) fputs("Error: " #e "\n", stderr);
+#endif
+
   void windows_print_stacktrace(CONTEXT* context)
   {
     SymInitialize(GetCurrentProcess(), 0, true);
@@ -116,70 +131,71 @@ int addr2line(char const * const program_name, void const * const addr)
 
   LONG WINAPI windows_exception_handler(EXCEPTION_POINTERS * ExceptionInfo)
   {
+    MessageBox(0, "in windows_exception_handler", 0, 0);
     switch(ExceptionInfo->ExceptionRecord->ExceptionCode)
     {
       case EXCEPTION_ACCESS_VIOLATION:
-        fputs("Error: EXCEPTION_ACCESS_VIOLATION\n", stderr);
+        notify_error("Error: EXCEPTION_ACCESS_VIOLATION");
         break;
       case EXCEPTION_ARRAY_BOUNDS_EXCEEDED:
-        fputs("Error: EXCEPTION_ARRAY_BOUNDS_EXCEEDED\n", stderr);
+        notify_error("Error: EXCEPTION_ARRAY_BOUNDS_EXCEEDED");
         break;
       case EXCEPTION_BREAKPOINT:
-        fputs("Error: EXCEPTION_BREAKPOINT\n", stderr);
+        notify_error("Error: EXCEPTION_BREAKPOINT");
         break;
       case EXCEPTION_DATATYPE_MISALIGNMENT:
-        fputs("Error: EXCEPTION_DATATYPE_MISALIGNMENT\n", stderr);
+        notify_error("Error: EXCEPTION_DATATYPE_MISALIGNMENT");
         break;
       case EXCEPTION_FLT_DENORMAL_OPERAND:
-        fputs("Error: EXCEPTION_FLT_DENORMAL_OPERAND\n", stderr);
+        notify_error("Error: EXCEPTION_FLT_DENORMAL_OPERAND");
         break;
       case EXCEPTION_FLT_DIVIDE_BY_ZERO:
-        fputs("Error: EXCEPTION_FLT_DIVIDE_BY_ZERO\n", stderr);
+        notify_error("Error: EXCEPTION_FLT_DIVIDE_BY_ZERO");
         break;
       case EXCEPTION_FLT_INEXACT_RESULT:
-        fputs("Error: EXCEPTION_FLT_INEXACT_RESULT\n", stderr);
+        notify_error("Error: EXCEPTION_FLT_INEXACT_RESULT");
         break;
       case EXCEPTION_FLT_INVALID_OPERATION:
-        fputs("Error: EXCEPTION_FLT_INVALID_OPERATION\n", stderr);
+        notify_error("Error: EXCEPTION_FLT_INVALID_OPERATION");
         break;
       case EXCEPTION_FLT_OVERFLOW:
-        fputs("Error: EXCEPTION_FLT_OVERFLOW\n", stderr);
+        notify_error("Error: EXCEPTION_FLT_OVERFLOW");
         break;
       case EXCEPTION_FLT_STACK_CHECK:
-        fputs("Error: EXCEPTION_FLT_STACK_CHECK\n", stderr);
+        notify_error("Error: EXCEPTION_FLT_STACK_CHECK");
         break;
       case EXCEPTION_FLT_UNDERFLOW:
-        fputs("Error: EXCEPTION_FLT_UNDERFLOW\n", stderr);
+        notify_error("Error: EXCEPTION_FLT_UNDERFLOW");
         break;
       case EXCEPTION_ILLEGAL_INSTRUCTION:
-        fputs("Error: EXCEPTION_ILLEGAL_INSTRUCTION\n", stderr);
+        notify_error("Error: EXCEPTION_ILLEGAL_INSTRUCTION");
         break;
       case EXCEPTION_IN_PAGE_ERROR:
-        fputs("Error: EXCEPTION_IN_PAGE_ERROR\n", stderr);
+        notify_error("Error: EXCEPTION_IN_PAGE_ERROR");
         break;
       case EXCEPTION_INT_DIVIDE_BY_ZERO:
-        fputs("Error: EXCEPTION_INT_DIVIDE_BY_ZERO\n", stderr);
+        notify_error("Error: EXCEPTION_INT_DIVIDE_BY_ZERO");
         break;
       case EXCEPTION_INT_OVERFLOW:
-        fputs("Error: EXCEPTION_INT_OVERFLOW\n", stderr);
+        notify_error("Error: EXCEPTION_INT_OVERFLOW");
         break;
       case EXCEPTION_INVALID_DISPOSITION:
-        fputs("Error: EXCEPTION_INVALID_DISPOSITION\n", stderr);
+        notify_error("Error: EXCEPTION_INVALID_DISPOSITION");
         break;
       case EXCEPTION_NONCONTINUABLE_EXCEPTION:
-        fputs("Error: EXCEPTION_NONCONTINUABLE_EXCEPTION\n", stderr);
+        notify_error("Error: EXCEPTION_NONCONTINUABLE_EXCEPTION");
         break;
       case EXCEPTION_PRIV_INSTRUCTION:
-        fputs("Error: EXCEPTION_PRIV_INSTRUCTION\n", stderr);
+        notify_error("Error: EXCEPTION_PRIV_INSTRUCTION");
         break;
       case EXCEPTION_SINGLE_STEP:
-        fputs("Error: EXCEPTION_SINGLE_STEP\n", stderr);
+        notify_error("Error: EXCEPTION_SINGLE_STEP");
         break;
       case EXCEPTION_STACK_OVERFLOW:
-        fputs("Error: EXCEPTION_STACK_OVERFLOW\n", stderr);
+        notify_error("Error: EXCEPTION_STACK_OVERFLOW");
         break;
       default:
-        fputs("Error: Unrecognized Exception\n", stderr);
+        notify_error("Error: Unrecognized Exception");
         break;
     }
     fflush(stderr);
@@ -199,6 +215,7 @@ int addr2line(char const * const program_name, void const * const addr)
 
   void set_signal_handler()
   {
+    MessageBox(0, "Going to set_signal_handler", 0, 0);
     SetUnhandledExceptionFilter(windows_exception_handler);
   }
 #else
@@ -354,31 +371,43 @@ int addr2line(char const * const program_name, void const * const addr)
 #endif
 
 int  divide_by_zero();
-void cause_segfault();
+func_declspec void call_convention cause_segfault();
 void stack_overflow();
 void infinite_loop();
 void illegal_instruction();
-void cause_calamity();
+func_declspec void call_convention cause_calamity();
 
 static char const * icky_global_program_name;
 
+#ifdef AS_DLL
+func_declspec int call_convention init()
+// BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
+#else
 int main(int argc, char * argv[])
+#endif
 {
+
+#ifdef AS_DLL
+  icky_global_program_name = "todo";
+#else
   (void)argc;
 
   /* store off program path so we can use it later */
   icky_global_program_name = argv[0];
+#endif
 
   set_signal_handler();
 
+#ifndef AS_DLL
   cause_calamity();
 
   puts("OMG! Nothing bad happend!");
+#endif
 
   return 0;
 }
 
-void cause_calamity()
+func_declspec void call_convention cause_calamity()
 {
   /* uncomment one of the following error conditions to cause a calamity of 
    your choosing! */
@@ -400,10 +429,13 @@ int divide_by_zero()
   return a / b;
 }
 
-void cause_segfault()
+func_declspec void call_convention cause_segfault()
 {
-  int * p = (int*)0x12345678;
+  MessageBox(0, "cause_segfault 1", 0, 0);
+//int * p = (int*)0x12345678;
+  int * p = (int*)0;
   *p = 0;
+  MessageBox(0, "cause_segfault 2", 0, 0);
 }
 
 void stack_overflow();
