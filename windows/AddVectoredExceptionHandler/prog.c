@@ -11,20 +11,27 @@
   #define out(txt) printf(#txt "\r\n");
 #endif
 
+int* p;
+int  d = 100;
 
-LONG WINAPI MyVectorContinueHandler(PEXCEPTION_POINTERS p) {
-  out("in my vectored continue handler\r\n");
-  return EXCEPTION_CONTINUE_SEARCH;
+LONG WINAPI MyVectorContinueHandler(PEXCEPTION_POINTERS exPtr) {
+    out("in my vectored continue handler\r\n");
+    return EXCEPTION_CONTINUE_SEARCH;
 }
 
-LONG WINAPI MyVectorExceptionFilter(PEXCEPTION_POINTERS p) {
-  out("in my vectored exception filter\r\n");
-  return EXCEPTION_CONTINUE_SEARCH;
+LONG WINAPI MyVectorExceptionFilter(PEXCEPTION_POINTERS exPtr) {
+    out("in my vectored exception filter\r\n");
+
+ // This is a attempt to fix the error condition.
+ // It does not work, however...
+    p = &d;
+
+    return EXCEPTION_CONTINUE_SEARCH;
 }
 
-LONG WINAPI MyUnhandledExceptionFilter(PEXCEPTION_POINTERS p) {
-  out("in my unhandled excepiton filter\r\n");
-  return EXCEPTION_CONTINUE_SEARCH;
+LONG WINAPI MyUnhandledExceptionFilter(PEXCEPTION_POINTERS exPtr) {
+    out("in my unhandled excepiton filter\r\n");
+    return EXCEPTION_CONTINUE_SEARCH;
 }
 
 LONG MyExceptFilter() {
@@ -41,15 +48,14 @@ int main(int argc, char* argv[])
 {
   LPTOP_LEVEL_EXCEPTION_FILTER pOriginalFilter = SetUnhandledExceptionFilter(MyUnhandledExceptionFilter);
  
-  AddVectoredExceptionHandler(1,MyVectorExceptionFilter);
-  AddVectoredContinueHandler(1,MyVectorContinueHandler);
+  AddVectoredExceptionHandler(1, MyVectorExceptionFilter);
+  AddVectoredContinueHandler (1, MyVectorContinueHandler);
 
 // __try
 // {
   //trigger an access violation here
-  int* p;
-  p = 0;
-  *p = 10;
+     p =  0;
+    *p = 10;
 // }
 // __except(MyExceptFilter())
 // {
