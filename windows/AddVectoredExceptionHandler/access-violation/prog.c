@@ -66,8 +66,13 @@ void print_PEXCEPTION_POINTERS(PEXCEPTION_POINTERS exPtr) {
 
 LONG WINAPI ExFilter(PEXCEPTION_POINTERS exPtr) {
     out("Filter\r\n");
+
    (exPtr->ContextRecord->Eip) += 3;
+
     print_PEXCEPTION_POINTERS(exPtr);
+
+    SetThreadContext(GetCurrentThread(), exPtr->ContextRecord);
+
     return EXCEPTION_CONTINUE_SEARCH;
 }
 
@@ -105,7 +110,7 @@ int main() {
 
   LPTOP_LEVEL_EXCEPTION_FILTER pOriginalFilter = SetUnhandledExceptionFilter(ExFilter);
 
-  AddVectoredExceptionHandler(1, ExHandler);
+  AddVectoredExceptionHandler(1, ExHandler  );
   AddVectoredContinueHandler (1, ContHandler);
 
   char buf[123];
