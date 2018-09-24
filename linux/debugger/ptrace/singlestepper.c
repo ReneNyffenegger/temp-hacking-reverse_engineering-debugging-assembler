@@ -1,3 +1,8 @@
+//
+// Helpful were:
+//   github:        singlestepper.c
+//   Eli Bendersky: How debuggers work
+//
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -34,6 +39,10 @@ void fprint_wait_status(FILE *stream, int status)
             strerror(errno));
         return -1;
     }
+
+//  printf("sizeof regs.rip = %d, rip = %p\n", sizeof(regs.rip), regs.rip);
+//  exit(0);
+
 //  if( eip )
 //      *eip = regs.eip;
     if( rip )
@@ -52,48 +61,81 @@ int singlestep(int pid)
     return status;
 }
 
-int main(int argc, char ** argv, char **envp)
-{
+void run_debuggee(char *program, char **child_args, char **envp) {
+
+   if (ptrace(
+          PTRACE_TRACEME, // Trace Me: The process requests to be debugged by its parent.
+          0, 0, 0)
+     ) {
+       fprintf(stderr, "Error setting TRACEME: %s\n", strerror(errno));
+       exit(-1);
+   }
+   execve(program, child_args, envp);
+}
+
+void run_debugger(pid_t pid_debuggee) {
+
 //  uint32_t eip;
     uint64_t rip;
-    pid_t pid;
+
     int status;
+
+    waitpid(pid_debuggee, &status, 0);
+    fprint_wait_status(stderr,status);
+
+    while( WIFSTOPPED(status) ) {
+//      if( ptrace_instruction_pointer(pid_debuggee, &eip) ) {
+        if( ptrace_instruction_pointer(pid_debuggee, &rip) ) {
+            break;
+        }
+//      fprintf(stderr, "EIP: %p\n", (void*)eip);
+
+//      struct user_regs_struct regs;
+//      ptrace(PTRACE_GETREGS, pid_debuggee, 0, &regs);
+
+        long int instr = ptrace(PTRACE_PEEKTEXT, pid_debuggee, rip, 0);
+
+        printf("RIP: %p, instr = 0x%16x\n", (void*)rip, instr);
+        status = singlestep(pid_debuggee);
+    }
+    fprint_wait_status(stderr, status);
+    fprintf(stderr, "Detaching\n");
+    ptrace(PTRACE_DETACH, pid_debuggee, 0, 0);
+
+}
+
+
+int main(int argc, char ** argv, char **envp) {
+    pid_t pid;
     char *program;
+
     if (argc < 2) {
         fprintf(stderr, "Usage: %s elffile arg0 arg1 ...\n", argv[0]);
         exit(-1);
     }
+
     program = argv[1];
     char ** child_args = (char**) &argv[1];
 
+ //
+ // Start a new process
+ //
     pid = fork();
+
     if( pid == -1 ) {
         fprintf(stderr, "Error forking: %s\n", strerror(errno));
         exit(-1);
     }
     if( pid == 0 ) {
-        /* child */
-        if( ptrace(PTRACE_TRACEME, 0, 0, 0) ) {
-            fprintf(stderr, "Error setting TRACEME: %s\n", strerror(errno));
-            exit(-1);
-        }
-        execve(program,child_args,envp);
+        // child
+
+        run_debuggee(program, child_args, envp);
+
     } else {
-        /* parent */
-        waitpid(pid, &status, 0);
-        fprint_wait_status(stderr,status);
-        while( WIFSTOPPED(status) ) {
-//          if( ptrace_instruction_pointer(pid, &eip) ) {
-            if( ptrace_instruction_pointer(pid, &rip) ) {
-                break;
-            }
-//          fprintf(stderr, "EIP: %p\n", (void*)eip);
-            fprintf(stderr, "EIP: %p\n", (void*)rip);
-            status = singlestep(pid);
-        }
-        fprint_wait_status(stderr, status);
-        fprintf(stderr, "Detaching\n");
-        ptrace(PTRACE_DETACH, pid, 0, 0);
+        // parent
+
+        run_debugger(pid);
+
     }
 
     return 0;
