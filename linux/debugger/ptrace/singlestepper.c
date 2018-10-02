@@ -14,19 +14,23 @@
 #include <sys/user.h>
 #include <stdint.h>
 
-void fprint_wait_status(FILE *stream, int status)
+#ifndef WCOREDUMP
+#define WCOREDUMP(x) ((x) & 0x80)
+#endif
+
+void print_wait_status(int status)
 {
     if( WIFSTOPPED(status) ) {
-        fprintf(stream, "Child stopped: %d\n", WSTOPSIG(status));
+        printf("Child stopped: %d\n", WSTOPSIG(status));
     }
     if( WIFEXITED(status) ) {
-        fprintf(stream, "Child exited: %d\n", WEXITSTATUS(status));
+        printf("Child exited: %d\n", WEXITSTATUS(status));
     }
     if( WIFSIGNALED(status) ) {
-        fprintf(stream, "Child signaled: %d\n", WTERMSIG(status));
+        printf("Child signaled: %d\n", WTERMSIG(status));
     }
     if( WCOREDUMP(status) ) {
-        fprintf(stream, "Core dumped.\n");
+        printf("Core dumped.\n");
     }
 }
 
@@ -34,11 +38,16 @@ void fprint_wait_status(FILE *stream, int status)
    int ptrace_instruction_pointer(int pid, uint64_t *rip)
 {
     struct user_regs_struct regs;
-    if( ptrace(PTRACE_GETREGS, pid, NULL, (void*)&regs) ) {
-        fprintf(stderr, "Error fetching registers from child process: %s\n",
-            strerror(errno));
+
+//  if( ptrace(PTRACE_GETREGS, pid, NULL, (void*) &regs) ) {
+    if( ptrace(PTRACE_GETREGS, pid, NULL,         &regs) ) {
+
+        printf("Error fetching registers from child process: %s\n", strerror(errno));
         return -1;
     }
+
+
+
 
 //  printf("sizeof regs.rip = %d, rip = %p\n", sizeof(regs.rip), regs.rip);
 //  exit(0);
@@ -67,7 +76,7 @@ void run_debuggee(char *program, char **child_args, char **envp) {
           PTRACE_TRACEME, // Trace Me: The process requests to be debugged by its parent.
           0, 0, 0)
      ) {
-       fprintf(stderr, "Error setting TRACEME: %s\n", strerror(errno));
+       printf("Error setting TRACEME: %s\n", strerror(errno));
        exit(-1);
    }
    execve(program, child_args, envp);
@@ -81,7 +90,7 @@ void run_debugger(pid_t pid_debuggee) {
     int status;
 
     waitpid(pid_debuggee, &status, 0);
-    fprint_wait_status(stderr,status);
+    print_wait_status(status);
 
     while( WIFSTOPPED(status) ) {
 //      if( ptrace_instruction_pointer(pid_debuggee, &eip) ) {
@@ -93,13 +102,17 @@ void run_debugger(pid_t pid_debuggee) {
 //      struct user_regs_struct regs;
 //      ptrace(PTRACE_GETREGS, pid_debuggee, 0, &regs);
 
-        long int instr = ptrace(PTRACE_PEEKTEXT, pid_debuggee, rip, 0);
+//      long     int instr = ptrace(PTRACE_PEEKTEXT, pid_debuggee, rip, 0);
+ //     unsigned int instr = ptrace(PTRACE_PEEKTEXT, pid_debuggee, rip, 0);
+        long         instr = ptrace(PTRACE_PEEKTEXT, pid_debuggee, rip, 0);
 
-        printf("RIP: %p, instr = 0x%16x\n", (void*)rip, instr);
+        printf("RIP: %p, instr = 0x%016x\n", (void*)rip, instr);
+//      printf("RIP:     instr = 0x%p   \n",             instr);
+
         status = singlestep(pid_debuggee);
     }
-    fprint_wait_status(stderr, status);
-    fprintf(stderr, "Detaching\n");
+    print_wait_status(status);
+    printf("Detaching\n");
     ptrace(PTRACE_DETACH, pid_debuggee, 0, 0);
 
 }
@@ -110,7 +123,7 @@ int main(int argc, char ** argv, char **envp) {
     char *program;
 
     if (argc < 2) {
-        fprintf(stderr, "Usage: %s elffile arg0 arg1 ...\n", argv[0]);
+        printf("Usage: %s elffile arg0 arg1 ...\n", argv[0]);
         exit(-1);
     }
 
@@ -123,7 +136,7 @@ int main(int argc, char ** argv, char **envp) {
     pid = fork();
 
     if( pid == -1 ) {
-        fprintf(stderr, "Error forking: %s\n", strerror(errno));
+        printf("Error forking: %s\n", strerror(errno));
         exit(-1);
     }
     if( pid == 0 ) {
