@@ -1,0 +1,1 @@
+CALLING_CONVENTION TYPE do_something(TYPE);

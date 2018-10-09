@@ -1,7 +1,7 @@
 all: debugee singlestepper debugee.objdump
 
 debugee.objdump: debugee
-	objdump -d $< > $@
+	objdump -d -M intel -S $< > $@
 
 singlestepper: singlestepper.o
 	gcc $< -o $@
