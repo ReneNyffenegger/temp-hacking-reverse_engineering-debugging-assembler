@@ -1,34 +1,51 @@
 	.file	"main_.c"
-	.def	___main;	.scl	2;	.type	32;	.endef
-	.section .rdata,"dr"
-LC0:
-	.ascii "Hello, world\0"
-LC1:
-	.ascii "%s, the num is %d\12\0"
 	.text
-	.globl	_main
-	.def	_main;	.scl	2;	.type	32;	.endef
-_main:
-	pushl	%ebp
-	movl	%esp, %ebp
-	andl	$-16, %esp
-	addl	$-128, %esp
-	call	___main
-	movl	$LC0, 124(%esp)
-	movl	$42, 120(%esp)
-	movl	120(%esp), %eax
-	movl	%eax, 12(%esp)
-	movl	124(%esp), %eax
-	movl	%eax, 8(%esp)
-	movl	$LC1, 4(%esp)
-	leal	20(%esp), %eax
-	movl	%eax, (%esp)
-	movl	__imp__wsprintfA, %eax
-	call	*%eax
-	leal	20(%esp), %eax
-	movl	%eax, (%esp)
-	call	_puts
-	leave
+	.def	__main;	.scl	2;	.type	32;	.endef
+	.section .rdata,"dr"
+.LC0:
+	.ascii "Hello, world\0"
+	.align 8
+.LC1:
+	.ascii "%s, the num is %d, the long num is %I64u %I64d\12\0"
+	.text
+	.globl	main
+	.def	main;	.scl	2;	.type	32;	.endef
+	.seh_proc	main
+main:
+	pushq	%rbp
+	.seh_pushreg	%rbp
+	movq	%rsp, %rbp
+	.seh_setframe	%rbp, 0
+	subq	$192, %rsp
+	.seh_stackalloc	192
+	.seh_endprologue
+	call	__main
+	leaq	.LC0(%rip), %rax
+	movq	%rax, -8(%rbp)
+	movl	$42, -12(%rbp)
+	movq	$-1, -24(%rbp)
+	movabsq	$9223372036854775807, %rax
+	movq	%rax, -32(%rbp)
+	movl	-12(%rbp), %r8d
+	movq	-8(%rbp), %rcx
+	leaq	-144(%rbp), %rax
+	movq	-32(%rbp), %rdx
+	movq	%rdx, 40(%rsp)
+	movq	-24(%rbp), %rdx
+	movq	%rdx, 32(%rsp)
+	movl	%r8d, %r9d
+	movq	%rcx, %r8
+	leaq	.LC1(%rip), %rdx
+	movq	%rax, %rcx
+	movq	__imp_wsprintfA(%rip), %rax
+	call	*%rax
+	leaq	-144(%rbp), %rax
+	movq	%rax, %rcx
+	call	puts
+	movl	$0, %eax
+	addq	$192, %rsp
+	popq	%rbp
 	ret
-	.ident	"GCC: (i686-posix-sjlj, built by strawberryperl.com project) 4.9.2"
-	.def	_puts;	.scl	2;	.type	32;	.endef
+	.seh_endproc
+	.ident	"GCC: (x86_64-posix-seh, Built by strawberryperl.com project) 8.3.0"
+	.def	puts;	.scl	2;	.type	32;	.endef
