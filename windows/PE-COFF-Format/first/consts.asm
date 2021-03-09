@@ -23,7 +23,12 @@ $SG6068	DB	'Hello World.', 00H
 
 	ORG $+3
 
-buttons	DD	04H
+;
+;   DD: Allocate and initialize 4 bytes, here with
+;   the value 0x24 (= MB_YESNO (0x04) + MB_ICONQUESTION (0x20)
+;   for MessageBox)
+;
+buttons	DD	24h
 
 _DATA	ENDS
 END

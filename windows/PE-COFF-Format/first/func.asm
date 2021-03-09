@@ -40,13 +40,38 @@ func	PROC
 	xor	ecx, ecx
 	call	MessageBoxA
 	mov	DWORD PTR ret$[rsp], eax
-; Line 15
-	mov	eax, DWORD PTR ret$[rsp]
-; Line 17
+
+	mov	ecx, DWORD PTR ret$[rsp]
+	call	twice
+
 	add	rsp, 56					; 00000038H
 	ret	0
 func	ENDP
 
-_TEXT	ENDS
+;q _TEXT	ENDS
+;q ; Function compile flags: /Odtp
+;q 
+;q _TEXT	SEGMENT
 
+x$ = 8
+
+twice	PROC
+  ;
+  ;   Function that returns its only int-argument doubled.
+  ;
+  ;   Note: unike func, twice is not declared 'PUBLIC'
+  ;
+
+
+; File C:\Users\Rene\github\temp\hacking-reverse-engineering-deubgging-assembler\windows\PE-COFF-Format\first\func.c
+; Line 12
+; mov	DWORD PTR [rsp+8], ecx
+; Line 13
+	mov	eax, DWORD PTR x$[rsp]
+	shl	eax, 1
+; Line 14
+	ret	0
+twice	ENDP
+
+_TEXT	ENDS
 END
