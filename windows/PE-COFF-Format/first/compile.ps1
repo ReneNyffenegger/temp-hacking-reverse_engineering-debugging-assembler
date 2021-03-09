@@ -1,12 +1,15 @@
-# cl /Fa /c entry.c
+rm *.obj
+rm *.exe
+
+# cl /nologo /FAcs /Faentry.asm_ /c entry.c
 
   ml64 /nologo /c entry.asm
 
-# cl /nologo /Fa /c func.c
+# cl /nologo /FAcs /Fafunc.asm_ /c func.c
 
   ml64 /nologo /c func.asm
 
-# cl /Fa /c consts.c
+# cl /nologo /FAcs /Faconsts.asm_ /c consts.c
 
   ml64 /nologo /c consts.asm
 

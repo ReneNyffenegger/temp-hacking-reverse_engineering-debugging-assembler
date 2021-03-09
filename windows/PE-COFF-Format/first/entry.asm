@@ -33,16 +33,29 @@ entry	PROC
 ; Line 4
 ;q $LN3:
 
+; 00000	48 89 4c 24 08
 	mov	QWORD PTR [rsp+8], rcx
+
+; 00005	48 83 ec 38	 sub	 rsp, 56			; 00000038H
 	sub	rsp, 56					; 00000038H
-; Line 6
+
+; 00009	e8 00 00 00 00	 call	 func
 	call	func
+
+; 0000e	89 44 24 20	 mov	 DWORD PTR ret$[rsp], eax
 	mov	DWORD PTR ret$[rsp], eax
 ; Line 7
+
+; 00012	8b 4c 24 20	 mov	 ecx, DWORD PTR ret$[rsp]
 	mov	ecx, DWORD PTR ret$[rsp]
+
+; 00012	8b 4c 24 20	 mov	 ecx, DWORD PTR ret$[rsp]
 	call	ExitProcess
 ; Line 9
+; 0001b	48 83 c4 38	 add	 rsp, 56			; 00000038H
 	add	rsp, 56					; 00000038H
+
+; 0001f	c3		 ret	 0
 	ret	0
 
 entry	ENDP
