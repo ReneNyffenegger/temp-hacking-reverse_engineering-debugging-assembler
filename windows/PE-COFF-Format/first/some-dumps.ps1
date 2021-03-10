@@ -1,5 +1,7 @@
 $objConsts = get-objDump -path consts.obj
 
+$objConsts.SectionHeaders.Name           # expected: .data
+
 $objConsts.SectionHeaders[1].Name           # expected: .data
 $objConsts.SectionHeaders[1].Relocations
 
