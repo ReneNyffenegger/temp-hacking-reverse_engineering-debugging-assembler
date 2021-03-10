@@ -18,11 +18,11 @@ EXTRN message_title:QWORD
 EXTRN buttons:DWORD
 
 
-_DATA	SEGMENT
+_DATA SEGMENT
 
-  SG6097	DB	'MessageBox with title %s and text %s returned %d', 0aH, 00H
+  printf_format   DB  'MessageBox with title %s and text %s returned %d', 0aH, 00H
 
-_DATA	ENDS
+_DATA ENDS
 
 _TEXT SEGMENT
 
@@ -66,11 +66,11 @@ func  PROC
    
 func  ENDP
 
-_TEXT	ENDS
+_TEXT ENDS
 
 ; --------------------------------------------
 
-_TEXT	SEGMENT
+_TEXT SEGMENT
 
 charsWritten$ = 48
 stdOut$ = 56
@@ -102,7 +102,7 @@ printReturnValue PROC
   mov   DWORD PTR [rsp+32], eax     ; 00021 89 44 24 20
   mov   r9, QWORD PTR message_text    ;  00025 4c 8b 0d 00 00 00 00    
   mov   r8, QWORD PTR message_title   ;  0002c 4c 8b 05 00 00 00 00    
-  lea   rdx, SG6097      ;  00033 48 8d 15 00 00 00 00    
+  lea   rdx, printf_format      ;  00033 48 8d 15 00 00 00 00    
   lea   rcx, QWORD PTR buf$[rsp]      ;  0003a 48 8d 4c 24 40          
   call  wsprintfA                     ;  0003f e8 00 00 00 00          
 
