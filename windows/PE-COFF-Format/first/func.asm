@@ -73,7 +73,7 @@ _TEXT ENDS
 _TEXT SEGMENT
 
 charsWritten$ = 48
-stdOut$ = 56
+stdOut = 56
 buf     = 64
 ret$ = 288
 
@@ -92,7 +92,7 @@ printReturnValue PROC
 
   mov   ecx, -11     ;  0000b b9 f5 ff ff ff
   call  GetStdHandle ;  00010 e8 00 00 00 00
-  mov   QWORD PTR stdOut$[rsp], rax ; 00015 48 89 44 24 38
+  mov   QWORD PTR [rsp + stdOut], rax ; 00015 48 89 44 24 38
 
 ; 29   : // HANDLE stdOut = GetStdHandle(STD_OUTPUT_HANDLE);  // -11 = STD_OUTPUT_HANDLE 
 ; 30   : 
@@ -103,27 +103,27 @@ printReturnValue PROC
   mov   r9, QWORD PTR message_text    ;  00025 4c 8b 0d 00 00 00 00    
   mov   r8, QWORD PTR message_title   ;  0002c 4c 8b 05 00 00 00 00    
   lea   rdx, printf_format      ;  00033 48 8d 15 00 00 00 00    
-  lea   rcx, QWORD PTR buf[rsp]      ;  0003a 48 8d 4c 24 40          
+  lea   rcx, QWORD PTR [rsp+buf]      ;  0003a 48 8d 4c 24 40          
   call  wsprintfA                     ;  0003f e8 00 00 00 00          
 
 ; 32   :    signed int charsWritten;
 ; 33   :    WriteConsoleA(stdOut, buf, lstrlen(buf), &charsWritten, 0);
 
-  lea   rcx, QWORD PTR buf[rsp]             ;  00044 48 8d 4c 24 40            
+  lea   rcx, QWORD PTR [rsp+buf]             ;  00044 48 8d 4c 24 40            
   call  lstrlen                              ;  00049 e8 00 00 00 00            
   mov   QWORD PTR [rsp+32], 0                ;  0004e 48 c7 44 24 20 00 00 00 00
   lea   r9, QWORD PTR charsWritten$[rsp]     ;  00057 4c 8d 4c 24 30            
   mov   r8d, eax                             ;  0005c 44 8b c0                  
-  lea   rdx, QWORD PTR buf[rsp]             ;  0005f 48 8d 54 24 40            
-  mov   rcx, QWORD PTR stdOut$[rsp]          ;  00064 48 8b 4c 24 38            
+  lea   rdx, QWORD PTR [rsp+buf   ]          ;  0005f 48 8d 54 24 40            
+  mov   rcx, QWORD PTR [rsp+stdOut]          ;  00064 48 8b 4c 24 38            
   call  WriteConsoleA                        ;  00069 e8 00 00 00 00            
 
 ; 34   : // MessageBox(0, buf, "bar", 0);
 ; 35   : 
 ; 36   : }
 
-    add   rsp, 280  ; 0006e 48 81 c4 18 01 00 00      ; 00000118H
-    ret   0         ; 00075 c3
+    add   rsp, 280                           ; 0006e 48 81 c4 18 01 00 00      ; 00000118H
+    ret   0                                  ; 00075 c3
 
 
 printReturnValue ENDP
