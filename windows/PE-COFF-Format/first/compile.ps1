@@ -15,6 +15,8 @@ rm *.exe
 
   link /nologo /entry:entry /nodefaultlib /subsystem:console /machine:x64 entry.obj func.obj consts.obj kernel32.lib user32.lib /out:prog.exe
 
-$process = Start-Process .\prog -passThru -Wait
-$exitCode = $process.ExitCode
-write-host "exitCode: $exitCode"
+& .\prog
+
+# $process = Start-Process .\prog -passThru -Wait
+# $exitCode = $process.ExitCode
+# write-host "exitCode: $exitCode"
