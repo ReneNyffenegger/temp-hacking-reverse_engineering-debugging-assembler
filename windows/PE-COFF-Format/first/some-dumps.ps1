@@ -32,4 +32,5 @@ $data_ = $objConsts.SectionHeaders[1].RawData
 #
 [System.BitConverter]::ToInt32($data_[0x30 .. 0x33], 0)
 
-$objFunc = get-objDump -path func.obj
+$objFunc = get-objDump -path consts.obj
+$objFunc = get-objDump -path consts.obj
