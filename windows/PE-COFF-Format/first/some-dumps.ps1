@@ -1,6 +1,6 @@
 $objConsts = get-objDump -path consts.obj
 
-$objConsts.SectionHeaders.Name           # expected: .data
+$objConsts.SectionHeaders.Name
 
 $objConsts.SectionHeaders[1].Name           # expected: .data
 $objConsts.SectionHeaders[1].Relocations
@@ -34,5 +34,9 @@ $data_ = $objConsts.SectionHeaders[1].RawData
 #
 [System.BitConverter]::ToInt32($data_[0x30 .. 0x33], 0)
 
-$objFunc = get-objDump -path consts.obj
-$objFunc = get-objDump -path consts.obj
+$objFunc = get-objDump -path func.obj
+$objFunc
+$objFunc.SectionHeaders.Name
+
+$objFunc_data = $objFunc.SectionHeaders | where name -eq '.data'
+$objFunc_text = $objFunc.SectionHeaders | where name -eq '.text$mn'
