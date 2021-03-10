@@ -72,12 +72,12 @@ _TEXT ENDS
 
 _TEXT SEGMENT
 
-charsWritten$ = 48
-stdOut = 56
-buf     = 64
-ret$ = 288
 
 printReturnValue PROC
+  charsWritten$ = 48
+  stdOut = 56
+  buf     = 64
+  ret$ = 288
 
 
 ; 24   : static void printReturnValue(signed int ret) {
@@ -98,13 +98,13 @@ printReturnValue PROC
 ; 30   : 
 ; 31   :    wsprintfA(buf, "MessageBox with title %s and text %s returned %d\n", message_title, message_text, ret);
 
-  mov   eax, DWORD PTR ret$[rsp] ; 0001a 8b 84 24 20 01 00 00
-  mov   DWORD PTR [rsp+32], eax     ; 00021 89 44 24 20
-  mov   r9, QWORD PTR message_text    ;  00025 4c 8b 0d 00 00 00 00    
-  mov   r8, QWORD PTR message_title   ;  0002c 4c 8b 05 00 00 00 00    
-  lea   rdx, printf_format      ;  00033 48 8d 15 00 00 00 00    
-  lea   rcx, QWORD PTR [rsp+buf]      ;  0003a 48 8d 4c 24 40          
-  call  wsprintfA                     ;  0003f e8 00 00 00 00          
+  mov   eax, DWORD PTR ret$[rsp]             ;  0001a  8b 84 24 20 01 00 00
+  mov   DWORD PTR [rsp+32], eax              ;  00021  89 44 24 20
+  mov   r9, QWORD PTR message_text           ;  00025  4c 8b 0d 00 00 00 00    
+  mov   r8, QWORD PTR message_title          ;  0002c  4c 8b 05 00 00 00 00    
+  lea   rdx, printf_format                   ;  00033  48 8d 15 00 00 00 00    
+  lea   rcx, QWORD PTR [rsp+buf]             ;  0003a  48 8d 4c 24 40          
+  call  wsprintfA                            ;  0003f  e8 00 00 00 00          
 
 ; 32   :    signed int charsWritten;
 ; 33   :    WriteConsoleA(stdOut, buf, lstrlen(buf), &charsWritten, 0);
@@ -122,8 +122,8 @@ printReturnValue PROC
 ; 35   : 
 ; 36   : }
 
-    add   rsp, 280                           ; 0006e 48 81 c4 18 01 00 00      ; 00000118H
-    ret   0                                  ; 00075 c3
+    add   rsp, 280                           ;  0006e 48 81 c4 18 01 00 00      ; 00000118H
+    ret   0                                  ;  00075 c3
 
 
 printReturnValue ENDP
