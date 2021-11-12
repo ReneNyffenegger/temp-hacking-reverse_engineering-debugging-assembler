@@ -3,8 +3,9 @@
 //
 #include <windows.h>
 #include <stdio.h>
+#include <inttypes.h>
 
-int ScanProcess(int pid) {
+int ScanProcess(DWORD pid) {
     HANDLE hProc;
     SYSTEM_INFO si;
     MEMORY_BASIC_INFORMATION mbi;
@@ -14,9 +15,9 @@ int ScanProcess(int pid) {
     minAddress = si.lpMinimumApplicationAddress;
     maxAddress = si.lpMaximumApplicationAddress;
 
-    printf("addr: 0x%" PRIx64 " .. 0x%" PRIx64 "\n");
+    printf("addr: 0x%" PRIx64 " .. 0x%" PRIx64 "\n", minAddress, maxAddress);
 
-    hProc = OpenProcess(PROCESS_ALL_ACCESS, NULL, pid);
+    hProc = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid);
 
     if (!hProc) {
         printf("[-] OpenProcess() failed.\n");
@@ -49,7 +50,7 @@ int main(int argc, char* argv[]) {
      return 1;
   }
 
-  int pid = atoi(argv[1]);
+  DWORD pid = atoi(argv[1]);
 
   printf("pid = %d\n", pid);
   ScanProcess(pid);
