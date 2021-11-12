@@ -3,10 +3,27 @@
 //
 #include <windows.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <inttypes.h>
 
-int ScanProcess(DWORD pid) {
-    HANDLE hProc;
+void ReadMemoryInt(HANDLE processHandle, LPCVOID address) {
+    char buf[8];
+
+    SIZE_T NumberOfBytesToRead = sizeof(buf) -1;
+    SIZE_T NumberOfBytesActuallyRead;
+
+    BOOL err = ReadProcessMemory(processHandle, address, &buf, NumberOfBytesToRead, &NumberOfBytesActuallyRead);
+
+    if (err || NumberOfBytesActuallyRead != NumberOfBytesToRead) {
+       printf("number of byte!\n");
+    }
+    printf("%s\n", buf);
+      /*an error occured*/ ;
+//  return buf; 
+}
+
+int ScanProcess(/* DWORD pid */ HANDLE hProc) {
+//  HANDLE hProc;
     SYSTEM_INFO si;
     MEMORY_BASIC_INFORMATION mbi;
     LPVOID minAddress, maxAddress;
@@ -17,7 +34,6 @@ int ScanProcess(DWORD pid) {
 
     printf("addr: 0x%" PRIx64 " .. 0x%" PRIx64 "\n", minAddress, maxAddress);
 
-    hProc = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid);
 
     if (!hProc) {
         printf("[-] OpenProcess() failed.\n");
@@ -46,12 +62,18 @@ int ScanProcess(DWORD pid) {
 
 int main(int argc, char* argv[]) {
 
-  if (argc < 1) {
+  if (argc < 3) {
      return 1;
   }
 
   DWORD pid = atoi(argv[1]);
 
   printf("pid = %d\n", pid);
-  ScanProcess(pid);
+
+  HANDLE hProc = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid);
+
+  ScanProcess(hProc);
+
+  ReadMemoryInt(hProc, _atoi64(argv[2]));
+  ReadMemoryInt(hProc, _atoi64(argv[3]));
 }
