@@ -12,10 +12,10 @@ void ReadMemoryInt(HANDLE processHandle, LPCVOID address) {
     SIZE_T NumberOfBytesToRead = sizeof(buf) -1;
     SIZE_T NumberOfBytesActuallyRead;
 
-    BOOL err = ReadProcessMemory(processHandle, address, &buf, NumberOfBytesToRead, &NumberOfBytesActuallyRead);
+    BOOL ok = ReadProcessMemory(processHandle, address, &buf, NumberOfBytesToRead, &NumberOfBytesActuallyRead);
 
-    if (err || NumberOfBytesActuallyRead != NumberOfBytesToRead) {
-       printf("number of byte!\n");
+    if ((!ok) || NumberOfBytesActuallyRead != NumberOfBytesToRead) {
+       printf("number of byte %d, %d, %d\n", ok, NumberOfBytesActuallyRead, NumberOfBytesToRead);
     }
     printf("%s\n", buf);
       /*an error occured*/ ;
@@ -43,7 +43,8 @@ int ScanProcess(/* DWORD pid */ HANDLE hProc) {
     while (minAddress < maxAddress) {
 
         printf("0x%p\n", minAddress);
-        if(!VirtualQueryEx(hProc, minAddress, &mbi, sizeof(mbi))) {
+
+        if (!VirtualQueryEx(hProc, minAddress, &mbi, sizeof(mbi))) {
            printf("[-] VirtualQueryEx() failed. %d\n", GetLastError());
          }
 
@@ -74,6 +75,6 @@ int main(int argc, char* argv[]) {
 
   ScanProcess(hProc);
 
-  ReadMemoryInt(hProc, _atoi64(argv[2]));
-  ReadMemoryInt(hProc, _atoi64(argv[3]));
+  ReadMemoryInt(hProc, (LPCVOID) _atoi64(argv[2]));
+  ReadMemoryInt(hProc, (LPCVOID) _atoi64(argv[3]));
 }
