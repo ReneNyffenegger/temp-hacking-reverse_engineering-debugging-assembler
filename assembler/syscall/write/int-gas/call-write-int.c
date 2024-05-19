@@ -1,6 +1,6 @@
 void write_int(int);
 
-int main() {
+int _start() {
 
     write_int(         1);
     write_int(        12);
