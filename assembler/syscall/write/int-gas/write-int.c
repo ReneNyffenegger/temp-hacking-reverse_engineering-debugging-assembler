@@ -13,7 +13,7 @@ void write_int(int i) {
  
    do {
    
-     digit = sum % 10;
+      digit = sum % 10;
    
       t[9-pos] = '0' + digit;
       pos++;
@@ -22,5 +22,5 @@ void write_int(int i) {
    }
    while (sum);
 
-   long result = syscall(SYS_write, 1, t, 11);
+   syscall(SYS_write, 1, t, 11);
 }
