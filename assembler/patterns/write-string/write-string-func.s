@@ -11,7 +11,26 @@ _start:
   # Call strlen to get the length of the string in hello_world
     lea hello_world(%rip), %rdi  # Load the address of the string into rdi
 
-    call strlen
+  # --- Determine length of string pointed at in rdi) --------------
+  
+        xor %rax, %rax  # Clear rax (will hold the length)
+        xor %rcx, %rcx  # Clear rcx (counter)
+     
+       .loop:
+           movb (%rdi,%rcx), %dl  # Load byte from rdi + rcx into dl
+           test %dl, %dl          # Test if the byte is zero
+           je .done               # If zero, end of string
+           inc %rcx               # Increment counter
+           jmp .loop              # Repeat loop
+     
+        .done:
+            mov %rcx, %rax         # Move the counter value to rax
+
+
+
+  # --- Determine length of string pointed at in rdi) --------------
+
+
     movq %rax, len(%rip)         # Store the length in 'len'
 
   # Write the string to stdout
@@ -26,19 +45,3 @@ _start:
     xor %rdi, %rdi               # exit status: 0
     syscall
 
-# Function: strlen
-# Computes the length of the string pointed to by rdi
-strlen:
-    xor %rax, %rax  # Clear rax (will hold the length)
-    xor %rcx, %rcx  # Clear rcx (counter)
-
-  .loop:
-      movb (%rdi,%rcx), %dl  # Load byte from rdi + rcx into dl
-      test %dl, %dl          # Test if the byte is zero
-      je .done               # If zero, end of string
-      inc %rcx               # Increment counter
-      jmp .loop              # Repeat loop
-
-   .done:
-       mov %rcx, %rax         # Move the counter value to rax
-       ret                    # Return (length is in rax)
