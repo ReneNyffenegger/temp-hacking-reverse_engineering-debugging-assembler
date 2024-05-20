@@ -10,35 +10,36 @@
 
 _start:
   # Call strlen to get the length of the string in hello_world
-    lea hello_world(%rip), %rdi  # Load the address of the string into rdi
+    lea hello_world(%rip), %rsi  # Load the address of the string into rsi
 
-  # --- Determine length of string pointed at in rdi) --------------
+  # --- Determine length of string pointed at in rsi) --------------
   
 #       xor %rax, %rax  # Clear rax (will hold the length)
         xor %rcx, %rcx  # Clear rcx (counter)
      
        .loop:
-           movb (%rdi,%rcx), %dl  # Load byte from rdi + rcx into dl
+           movb (%rsi,%rcx), %dl  # Load byte from rsi + rcx into dl
            test %dl, %dl          # Test if the byte is zero
            je .done               # If zero, end of string
            inc %rcx               # Increment counter
            jmp .loop              # Repeat loop
      
         .done:
-            mov %rcx, %rax         # Move the counter value to rax
+#           mov %rcx, %rax         # Move the counter value to rax
 
   # ----------------------------------------------------------------
 
 
-    movq %rax, len(%rip)         # Store the length in 'len'
+#   movq %rax, len(%rip)         # Store the length in 'len'
+    movq %rcx, %rdx
 
   #
   # write string
   #
     mov $1, %rax                 # syscall nr: 1 = syscall nr for write
     mov $1, %rdi                 # param 1   : 1 = file descriptor for stdout
-    lea hello_world(%rip), %rsi  # address of the string
-    mov len(%rip), %rdx          # number of bytes to write
+                                 # param 2   : address of string (already stored in %rdi)
+#   mov len(%rip), %rdx          # param 3   : len of string
     syscall
 
   # ----------------------------------------------------------------
