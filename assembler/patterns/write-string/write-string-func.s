@@ -25,13 +25,9 @@ _start:
            jmp .loop              # Repeat loop
      
         .done:
-#           mov %rcx, %rax         # Move the counter value to rax
+            movq %rcx, %rdx
 
   # ----------------------------------------------------------------
-
-
-#   movq %rax, len(%rip)         # Store the length in 'len'
-    movq %rcx, %rdx
 
   #
   # write string
@@ -39,7 +35,7 @@ _start:
     mov $1, %rax                 # syscall nr: 1 = syscall nr for write
     mov $1, %rdi                 # param 1   : 1 = file descriptor for stdout
                                  # param 2   : address of string (already stored in %rdi)
-#   mov len(%rip), %rdx          # param 3   : len of string
+                                 # param 3   : len of string     (already stored in %rdx)
     syscall
 
   # ----------------------------------------------------------------
