@@ -26,9 +26,7 @@ _start:
         .done:
             mov %rcx, %rax         # Move the counter value to rax
 
-
-
-  # --- Determine length of string pointed at in rdi) --------------
+  # ----------------------------------------------------------------
 
 
     movq %rax, len(%rip)         # Store the length in 'len'
