@@ -1,0 +1,4 @@
+
+development/languages/assembler/x86/addressing-modes
+
+6(%eax,%ecx,4)       -> eax + 4*ecx + 6

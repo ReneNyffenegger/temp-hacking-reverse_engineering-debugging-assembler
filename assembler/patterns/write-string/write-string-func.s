@@ -2,8 +2,8 @@
     hello_world:    .asciz "Hello, World!\n"
     another_string: .asciz "Another string\n"
 
-.section .bss
-    len: .skip 8  # reserve space for the length
+//.section .bss
+//    len: .skip 8  # reserve space for the length
 
 .section .text
     .global _start
