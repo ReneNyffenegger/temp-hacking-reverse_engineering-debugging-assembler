@@ -13,7 +13,7 @@ _start:
 
   # --- Determine length of string pointed at in rdi) --------------
   
-        xor %rax, %rax  # Clear rax (will hold the length)
+#       xor %rax, %rax  # Clear rax (will hold the length)
         xor %rcx, %rcx  # Clear rcx (counter)
      
        .loop:
