@@ -14,7 +14,7 @@ _start:
     call strlen
     movq %rax, len(%rip)         # Store the length in 'len'
 
-    # Write the string to stdout
+  # Write the string to stdout
     mov $1, %rax                 # syscall: write
     mov $1, %rdi                 # file descriptor: stdout
     lea hello_world(%rip), %rsi  # address of the string
