@@ -7,6 +7,7 @@
 .section .text
     .global _start
 
+
 _start:
   # Call strlen to get the length of the string in hello_world
     lea hello_world(%rip), %rdi  # Load the address of the string into rdi
@@ -31,14 +32,19 @@ _start:
 
     movq %rax, len(%rip)         # Store the length in 'len'
 
-  # Write the string to stdout
-    mov $1, %rax                 # syscall: write
-    mov $1, %rdi                 # file descriptor: stdout
+  #
+  # write string
+  #
+    mov $1, %rax                 # syscall nr: 1 = syscall nr for write
+    mov $1, %rdi                 # param 1   : 1 = file descriptor for stdout
     lea hello_world(%rip), %rsi  # address of the string
     mov len(%rip), %rdx          # number of bytes to write
     syscall
 
-    # Exit the program
+  # ----------------------------------------------------------------
+
+  # Exit the program
+
     mov $60, %rax                # syscall: exit
     xor %rdi, %rdi               # exit status: 0
     syscall
