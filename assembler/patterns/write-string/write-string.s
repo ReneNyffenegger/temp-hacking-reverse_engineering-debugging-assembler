@@ -4,7 +4,9 @@
 .section .text
     .global _start
 
+
 _start:
+
   # Write the string to stdout
     mov $1 , %rax            # syscall: write
     mov $1 , %rdi            # file descriptor: stdout
