@@ -2,7 +2,7 @@
 
 all: run prog.out
 
-run: 
+run: prog.out
 	@gdb --batch --command=commands.gdb ./prog.out
 
 prog.out:prog.c
