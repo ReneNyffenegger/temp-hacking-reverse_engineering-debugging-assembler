@@ -1,0 +1,19 @@
+
+long long times_02(long long n) { return  2 * n; }
+long long times_03(long long n) { return  3 * n; }
+long long times_04(long long n) { return  4 * n; }
+long long times_05(long long n) { return  5 * n; }
+long long times_06(long long n) { return  6 * n; }
+long long times_07(long long n) { return  7 * n; }
+long long times_08(long long n) { return  8 * n; }
+long long times_09(long long n) { return  9 * n; }
+long long times_10(long long n) { return 10 * n; }
+long long times_11(long long n) { return 11 * n; }
+long long times_12(long long n) { return 12 * n; }
+long long times_13(long long n) { return 13 * n; }
+long long times_14(long long n) { return 14 * n; }
+long long times_15(long long n) { return 15 * n; }
+long long times_16(long long n) { return 16 * n; }
+long long times_17(long long n) { return 17 * n; }
+long long times_18(long long n) { return 18 * n; }
+long long times_19(long long n) { return 19 * n; }
