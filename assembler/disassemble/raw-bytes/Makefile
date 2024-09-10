@@ -4,7 +4,7 @@
 #    -M  sets the syntax
 #
 # -m might be set to i8086 or i386 or …
-# -M migth be set to intel for intel syntax
+# -M might be set to intel for intel syntax
 # -M seems also to understand x86-64
 #
 
