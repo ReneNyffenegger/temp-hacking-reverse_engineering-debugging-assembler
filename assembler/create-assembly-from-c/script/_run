@@ -1,0 +1,10 @@
+./c2as main.c
+./c2as func.c
+
+# gcc -Wall main.s func.s -o prog
+gcc -Wall -c main.s -o main.o
+gcc -Wall -c func.s -o func.o
+
+gcc -Wall main.o func.o -o prog
+
+./prog one two three

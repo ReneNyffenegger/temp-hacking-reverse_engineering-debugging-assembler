@@ -1,0 +1,12 @@
+  src_c=$1
+# src_as=$2
+  src_as="${src_c%.c}.s"
+
+  syntax=intel
+# syntax=att
+
+  flags="-fno-asynchronous-unwind-tables -fomit-frame-pointer"
+# flags="$flags -g"
+  flags="$flags -Wall"
+
+gcc -O0 -S $flags -masm=$syntax $src_c -o $src_as
