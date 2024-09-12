@@ -6,12 +6,16 @@ b _start
 
 run
 
-set $argc   =  * (int*  ) ( $rsp +  0 )
+set $argc   =  * (int*   ) ( $rsp +  0 )
 
-set $argv_0 =  * (char**) ( $rsp +  8 )
-set $argv_1 =  * (char**) ( $rsp + 16 )
-set $argv_2 =  * (char**) ( $rsp + 24 )
-set $argv_3 =  * (char**) ( $rsp + 32 )
+set $argv_0 =  * (char** ) ( $rsp +  8 )
+set $argv_1 =  * (char** ) ( $rsp + 16 )
+set $argv_2 =  * (char** ) ( $rsp + 24 )
+set $argv_3 =  * (char** ) ( $rsp + 32 )
+                                          # NULL
+set $envp_0 =  * (char***) ( $rsp + 48 )
+set $envp_1 =  * (char***) ( $rsp + 56 )
+set $envp_2 =  * (char***) ( $rsp + 64 )
 
 p $argc
 p $argv_0
@@ -19,35 +23,18 @@ p $argv_1
 p $argv_2
 p $argv_3
 
-# p $argv_0
-# p $argv_1
-# p $argv_2
 
-# x/s *(void*)$argv
-# p $rsp+4
 
-  printf "argc    = %d\n",  $argc
-  printf "argv[0] = %s\n",          $argv_0
-  printf "argv[1] = %s\n",          $argv_1
-  printf "argv[2] = %s\n",          $argv_2
-  printf "argv[3] = %s\n",          $argv_3
+printf "argc    = %d\n",  $argc
 
-# printf "argv[1] = %s   \n", $argv_1
-# printf "argv[2] = %s   \n", $argv_2
+printf "argv[0] = %s\n",  $argv_0
+printf "argv[1] = %s\n",  $argv_1
+printf "argv[2] = %s\n",  $argv_2
+printf "argv[3] = %s\n",  $argv_3
 
-# print $eip
-# print $edi
+printf "envp[0] = %s\n",   $envp_0
+printf "envp[1] = %s\n",   $envp_1
+printf "envp[2] = %s\n",   $envp_2
 
 continue
 
-
-# break func
-#   commands
-#   silent
-#   printf "[33mgdb breakpoint on func: %lld %s[0m\n", $rdi, $rsi
-#   backtrace
-#   continue
-# end
-# 
-# run
-# # disassemble func
