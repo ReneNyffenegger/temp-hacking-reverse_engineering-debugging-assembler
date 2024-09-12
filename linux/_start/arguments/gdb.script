@@ -1,0 +1,57 @@
+set width 0
+set height 0
+set verbose off
+
+b _start
+
+run
+
+set $argc   =  * (int*   ) ( $rsp +  0 )
+set $argv_0 =  * (char***) ( $rsp +  8 )
+set $argv_1 =  * (char***) ( $rsp + 16 )
+set $argv_2 =  * (char***) ( $rsp + 24 )
+set $argv_3 =  * (char***) ( $rsp + 32 )
+
+# set $argv_0 =  * ( (char**) $argv )
+# set $argv_1 =  * (( (char**) $argv +  8))
+# set $argv_2 =  * (( (char**) $argv + 16))
+
+p $argc
+p $argv
+
+# p $argv_0
+# p $argv_1
+# p $argv_2
+
+# x/s *(void*)$argv
+# p $rsp+4
+
+# printf "argc    = %d\n",  * ((int* ) $rsp )
+# printf "argc    = %d\n",  * ((int* ) $argc )
+  printf "argc    = %d\n",  $argc
+# printf "argv[1] = %s\n", *((char**) $rsp+1)
+# printf "argv[0] = %s\n", *((char**) $argv )
+  printf "argv[0] = %s\n",          $argv_0
+  printf "argv[1] = %s\n",          $argv_1
+  printf "argv[2] = %s\n",          $argv_2
+  printf "argv[3] = %s\n",          $argv_3
+
+# printf "argv[1] = %s   \n", $argv_1
+# printf "argv[2] = %s   \n", $argv_2
+
+# print $eip
+# print $edi
+
+continue
+
+
+# break func
+#   commands
+#   silent
+#   printf "[33mgdb breakpoint on func: %lld %s[0m\n", $rdi, $rsi
+#   backtrace
+#   continue
+# end
+# 
+# run
+# # disassemble func
