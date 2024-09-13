@@ -5,6 +5,7 @@
 all: prog
 	#objdump -d prog
 	objdump -x prog
+	#readelf -p .interp prog
 
 #all: print-arguments-of-entry-point
 
