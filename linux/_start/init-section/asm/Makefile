@@ -15,4 +15,5 @@ all: prog
 prog: _start.s Makefile
 	#gcc _start.s  -nostdlib  -Wl,--no-dynamic-linker  -o prog
 	#gcc _start.s  -nostdlib  -Wl,--no-dynamic-linker -Wl,-static  -o prog
-	 gcc _start.s  -nostdlib   -Wl,-static             -o prog
+	#gcc _start.s  -nostdlib   -Wl,-static             -o prog
+	 gcc _start.s  -nostdlib                           -o prog
