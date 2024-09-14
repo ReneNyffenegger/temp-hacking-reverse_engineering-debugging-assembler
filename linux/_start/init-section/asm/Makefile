@@ -24,4 +24,4 @@ prog-linked-with-ld: prog-linked-with-ld.o
 	ld prog-linked-with-ld.o -nostdlib -o prog-linked-with-ld
 
 prog-linked-with-ld.o: _start.s Makefile
-	 gcc _start.s  -nostdlib -c                        -o prog-linked-with-ld.o
+	 gcc _start.s            -c                        -o prog-linked-with-ld.o
