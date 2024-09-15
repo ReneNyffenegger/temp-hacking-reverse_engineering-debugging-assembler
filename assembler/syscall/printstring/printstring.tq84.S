@@ -42,7 +42,7 @@ printstring:
 #
 # Get the character that *pos points at.
 #
-  movq  stack_pos, %rax #
+  movq  stack_pos, %rax
 #
 # MOVe Zero extended Byte to Long:
 # store the byte pointed at by %rax (= *pos) in %eax:
@@ -67,28 +67,14 @@ printstring:
   subq  stack_str, %rax
   movl  %eax, stack_strlen
 
-#
-#
 # Syscall
 
   movl $1           , %eax     # write() is syscall 1
   movq $1           , %rdi     # 1st argument is filescriptor (1=stdout)
   movq stack_str    , %rsi     # 2nd argument: pointer to the string
   movl stack_strlen , %edx     # 3rd argument
-  
-# movl  stack_strlen, %edx
-# movq  stack_str   , %rax
-# movl  %edx, %ecx  # tmp87,
-# movq  %rax, %rdx  # tmp88,
-# movl  $1, %esi  #,
-# movl  $1, %edi  #,
-# movl  $0, %eax  #,
 
   syscall
-# call  syscall@PLT #
-
-# printstring.c:16: }
-# nop 
 
   addq  $40, %rsp
 
