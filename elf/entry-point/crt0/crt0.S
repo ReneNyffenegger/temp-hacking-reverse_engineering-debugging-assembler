@@ -14,13 +14,13 @@ _start:
 #         leaq    8(%rsp),%rsi    # argv
 
 
+          movq    %rdi,%rdx       # environ = &argv[argc+1]
+          incq    %rdx            # rax = rax + 1
+          shlq    $3,%rdx         # rax = rax * 8
 
-          movq    %rdi,%rax       # environ = &argv[argc+1]
-          incq    %rax            # rax = rax + 1
-          shlq    $3,%rax         # rax = rax * 8
+          addq    %rsi,%rdx       # rax = rax + rsi
+#         movq    %rax, %rdx
 
-          addq    %rsi,%rax       # rax = rax + rsi
-          movq    %rax, %rdx
 # #       movq    %rax,Cenviron
 # #       pushq   %rsi
 # #       pushq   %rdi
