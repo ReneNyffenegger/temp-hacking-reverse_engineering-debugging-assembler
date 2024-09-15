@@ -10,7 +10,7 @@ prog.o: prog.c
 #printstring.s: printstring.c
 #	../../../assembler/create-assembly-from-c/script/c2as  printstring.c
 
-printstring.tq84.o: printstring.tq84.s
+printstring.tq84.o: printstring.tq84.S
 	gcc -c $< -o $@
 
 clean:
