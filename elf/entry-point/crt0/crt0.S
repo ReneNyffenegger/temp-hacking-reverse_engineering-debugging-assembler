@@ -2,18 +2,25 @@
         .globl  _start
 _start:
 
-    pop           %rdi
-    leaq  (%rsp), %rsi
+          pop           %rdi
+          leaq  (%rsp), %rsi
 
-# #       movq    0(%rsp),%rdi    # argc
+          leaq 8(%rsp), %rdx
+
+#
+#   Alternatively?
+#
 #         movq     (%rsp),%rdi    # argc
-# #       leaq    0(%rsp),%rdi    # argc
 #         leaq    8(%rsp),%rsi    # argv
 
-#         movq    %rdi,%rax       # environ = &argv[argc+1]
-#         incq    %rax            # rax = rax + 1
-#         shlq    $3,%rax         # rax = rax * 8
-#         addq    %rsi,%rax       # rax = rax + rsi
+
+
+          movq    %rdi,%rax       # environ = &argv[argc+1]
+          incq    %rax            # rax = rax + 1
+          shlq    $3,%rax         # rax = rax * 8
+
+          addq    %rsi,%rax       # rax = rax + rsi
+          movq    %rax, %rdx
 # #       movq    %rax,Cenviron
 # #       pushq   %rsi
 # #       pushq   %rdi

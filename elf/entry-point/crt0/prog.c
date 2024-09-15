@@ -1,9 +1,16 @@
 void writestring(char*);
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[], char* env[]) {
 
     for (int i=0; i<argc; i++) {
        writestring(argv[i]);
+       writestring("\n");
+    }
+
+    writestring("-----------------------------\n");
+
+    for (char** e = env; *e; e++) {
+       writestring(*e);
        writestring("\n");
     }
 
