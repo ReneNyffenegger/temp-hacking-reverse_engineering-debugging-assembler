@@ -68,7 +68,7 @@ printstring:
 
 # printstring.c:15:     syscall(SYS_write, STDOUT_FILENO, str, strlen);
   movl  stack_strlen, %edx
-  movq  stack_str, %rax # str, tmp88
+  movq  stack_str   , %rax
   movl  %edx, %ecx  # tmp87,
   movq  %rax, %rdx  # tmp88,
   movl  $1, %esi  #,
@@ -76,7 +76,7 @@ printstring:
   movl  $0, %eax  #,
   call  syscall@PLT #
 # printstring.c:16: }
-  nop 
+# nop 
   addq  $40, %rsp #,
   ret 
   .size printstring, .-printstring
