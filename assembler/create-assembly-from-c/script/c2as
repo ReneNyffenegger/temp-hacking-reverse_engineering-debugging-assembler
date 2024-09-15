@@ -41,6 +41,7 @@ done
 
   flags="-fno-asynchronous-unwind-tables -fomit-frame-pointer"
 # flags="$flags -g"
+# flags="$flags -fverbose-asm"
   flags="$flags -Wall"
 
 gcc -O0 -S $flags -masm=$syntax $src_c -o $src_as
