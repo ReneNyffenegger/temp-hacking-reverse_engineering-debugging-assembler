@@ -1,9 +1,43 @@
+#!/bin/bash
+#
+#   c2as               prog.c
+#   c2as -syntax intel prog.c
+#   c2as -syntax att   prog.c
+
+# syntax=intel
+  syntax=att
+
+
+while [[ $# -gt 1 ]]; do  # Parse script arguments
+
+  echo "\$# = $#"
+  echo "\$1 = $1"
+
+  case $1 in
+    -syntax)
+
+        echo "  \$1 = $1"
+        echo "  \$2 = $2"
+
+        if [[ -n $2 && $2 != -* ]]; then
+          syntax=$2
+          shift 2
+        else
+          echo "Error: -syntax option requires a value." >&2
+          exit 1
+        fi
+        ;;
+
+#   *)
+#     echo "Unknown option: $1" >&2
+#     exit 1
+#     ;;
+  esac
+done
+
   src_c=$1
 # src_as=$2
   src_as="${src_c%.c}.s"
-
-  syntax=intel
-# syntax=att
 
   flags="-fno-asynchronous-unwind-tables -fomit-frame-pointer"
 # flags="$flags -g"
