@@ -11,8 +11,9 @@
 
 // void printstring(char *str);
 
-#define stack_str  8(%rsp)
-#define stack_pos 24(%rsp)
+#define stack_str     8(%rsp)
+#define stack_pos    24(%rsp)
+#define stack_strlen 20(%rsp)
 
 printstring:
 
@@ -57,13 +58,16 @@ printstring:
 #
   jne .L_increase_pos
 
-# printstring.c:13:     int strlen = pos - str;
-  movq  stack_pos, %rax # pos, tmp86
-  subq  stack_str, %rax # str, _2
-# printstring.c:13:     int strlen = pos - str;
-  movl  %eax, 20(%rsp)  # _2, strlen
+#
+# stringlen is pos - str
+# Store this length on the stack
+#
+  movq  stack_pos, %rax
+  subq  stack_str, %rax
+  movl  %eax, stack_strlen
+
 # printstring.c:15:     syscall(SYS_write, STDOUT_FILENO, str, strlen);
-  movl  20(%rsp), %edx  # strlen, tmp87
+  movl  stack_strlen, %edx
   movq  stack_str, %rax # str, tmp88
   movl  %edx, %ecx  # tmp87,
   movq  %rax, %rdx  # tmp88,
