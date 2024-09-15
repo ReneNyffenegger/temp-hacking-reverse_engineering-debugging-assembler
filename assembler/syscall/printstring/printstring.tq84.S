@@ -1,10 +1,11 @@
-  .file "printstring.c"
+# .file "printstring.c"
 # GNU C17 (Debian 12.2.0-14) version 12.2.0 (x86_64-linux-gnu)
 # compiled by GNU C version 12.2.0, GMP version 6.2.1, MPFR version 4.1.1-p1, MPC version 1.3.1, isl version isl-0.25-GMP
 
-# warning: MPFR header version 4.1.1-p1 differs from library version 4.2.0.
+// # warning: MPFR header version 4.1.1-p1 differs from library version 4.2.0.
 # GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
 # options passed: -masm=att -mtune=generic -march=x86-64 -O0 -fno-asynchronous-unwind-tables -fomit-frame-pointer
+
   .text
   .globl  printstring
   .type printstring, @function
@@ -88,9 +89,11 @@ printstring:
 
 # printstring.c:16: }
 # nop 
+
   addq  $40, %rsp
 
   ret 
-  .size printstring, .-printstring
-  .ident  "GCC: (Debian 12.2.0-14) 12.2.0"
+
+# .size printstring, .-printstring
+# .ident  "GCC: (Debian 12.2.0-14) 12.2.0"
   .section  .note.GNU-stack,"",@progbits

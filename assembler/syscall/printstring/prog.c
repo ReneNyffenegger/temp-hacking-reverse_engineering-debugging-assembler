@@ -1,6 +1,9 @@
 
 void printstring(const char *str);
 int main(int argc, char* argv[]) {
-  printstring(argv[0]);
-  printstring("\n");
+
+  for (int i=0; i<argc; i++) {
+     printstring(argv[i]);
+     printstring("\n");
+  }
 }
