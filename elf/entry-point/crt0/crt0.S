@@ -2,10 +2,8 @@
         .globl  _start
 _start:
 
-          pop           %rdi
-          leaq  (%rsp), %rsi
-
-          leaq 8(%rsp), %rdx
+          pop           %rdi    # argc
+          leaq  (%rsp), %rsi    # After pop'ping rdi, argv is now pointed at by rsp
 
 #
 #   Alternatively?
@@ -13,12 +11,17 @@ _start:
 #         movq     (%rsp),%rdi    # argc
 #         leaq    8(%rsp),%rsi    # argv
 
+#         ---------------------------------------------------------------------------
+#
+#   third parameter: environ
+#
+#         environ = &argv[argc+1]
 
-          movq    %rdi,%rdx       # environ = &argv[argc+1]
-          incq    %rdx            # rax = rax + 1
-          shlq    $3,%rdx         # rax = rax * 8
+          movq    %rdi, %rdx      # rdx = argc
+          incq    %rdx            # rdx = rdx + 1
+          shlq    $3, %rdx        # rdx = rdx * 8
 
-          addq    %rsi,%rdx       # rax = rax + rsi
+          addq    %rsi, %rdx      # rdx = argv[argc + 1]
 #         movq    %rax, %rdx
 
 # #       movq    %rax,Cenviron
