@@ -1,3 +1,7 @@
+//
+//  Compare with /home/rene/github/dev/assembly/AMD64-assembly/stdlib-4-linux/temp/writestring.S
+//
+
 # .file "printstring.c"
 # GNU C17 (Debian 12.2.0-14) version 12.2.0 (x86_64-linux-gnu)
 # compiled by GNU C version 12.2.0, GMP version 6.2.1, MPFR version 4.1.1-p1, MPC version 1.3.1, isl version isl-0.25-GMP
@@ -44,7 +48,7 @@ printstring:
 #
   movq  stack_pos, %rax
 #
-# MOVe Zero extended Byte to Long:
+# MOVZBL: MOVe Zero extended Byte to Long:
 # store the byte pointed at by %rax (= *pos) in %eax:
 #
   movzbl  (%rax) , %eax
