@@ -1,9 +1,16 @@
+#
+#        https://gist.github.com/Scherso/d11e7de8bd27f234519cfb94348d9c70
+#
+
         .text
         .globl  _start
 _start:
 
+     #    xor   %rbp , %rbp     # Is zeroing out RBP recommended somewhere?
+
           pop           %rdi    # argc
-          leaq  (%rsp), %rsi    # After pop'ping rdi, argv is now pointed at by rsp
+          movq   %rsp , %rsi    # After pop'ping rdi, argv is now pointed at by rsp
+#         leaq  (%rsp), %rsi    #    Alternatively
 
 #
 #   Alternatively?
@@ -29,7 +36,21 @@ _start:
 # #       pushq   %rdi
 # #       call    Cmain
 
+
+
+    #
+    #   Align the stack point on a multiple of 16-bytes
+    #
+    #       The following two operations are equivalent.
+    #
+        and    $-16               , %rsp    
+        and    $0xFFFFFFFFFFFFFFF0, %rsp
+
         call    main
+
+    #
+    #   syscall exit() with value returned from main.
+    #
 
         movq    %rax , %rdi
         movq    $60  , %rax
