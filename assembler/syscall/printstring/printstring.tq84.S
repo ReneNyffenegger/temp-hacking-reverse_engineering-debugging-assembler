@@ -17,7 +17,7 @@
 
 printstring:
 
-  subq  $40, %rsp #,
+  subq  $40, %rsp
   movq  %rdi, stack_str # save str parameter on stack
 
 # 
@@ -66,18 +66,30 @@ printstring:
   subq  stack_str, %rax
   movl  %eax, stack_strlen
 
-# printstring.c:15:     syscall(SYS_write, STDOUT_FILENO, str, strlen);
-  movl  stack_strlen, %edx
-  movq  stack_str   , %rax
-  movl  %edx, %ecx  # tmp87,
-  movq  %rax, %rdx  # tmp88,
-  movl  $1, %esi  #,
-  movl  $1, %edi  #,
-  movl  $0, %eax  #,
-  call  syscall@PLT #
+#
+#
+# Syscall
+
+  movl $1           , %eax     # write() is syscall 1
+  movq $1           , %rdi     # 1st argument is filescriptor (1=stdout)
+  movq stack_str    , %rsi     # 2nd argument: pointer to the string
+  movl stack_strlen , %edx     # 3rd argument
+  
+# movl  stack_strlen, %edx
+# movq  stack_str   , %rax
+# movl  %edx, %ecx  # tmp87,
+# movq  %rax, %rdx  # tmp88,
+# movl  $1, %esi  #,
+# movl  $1, %edi  #,
+# movl  $0, %eax  #,
+
+  syscall
+# call  syscall@PLT #
+
 # printstring.c:16: }
 # nop 
-  addq  $40, %rsp #,
+  addq  $40, %rsp
+
   ret 
   .size printstring, .-printstring
   .ident  "GCC: (Debian 12.2.0-14) 12.2.0"
