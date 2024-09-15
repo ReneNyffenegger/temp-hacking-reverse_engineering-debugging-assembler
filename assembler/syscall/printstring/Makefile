@@ -4,5 +4,8 @@ prog: prog.o printstring.o
 prog.o: prog.c
 	gcc -c prog.c -o prog.o
 
-printstring.o: printstring.c
-	gcc -c printstring.c -o printstring.o
+printstring.s: printstring.c
+	../../../assembler/create-assembly-from-c/script/c2as printstring.c
+
+printstring.o: printstring.s
+	gcc -c printstring.s -o printstring.o
