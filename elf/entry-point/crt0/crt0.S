@@ -1,10 +1,29 @@
 #
 #        https://gist.github.com/Scherso/d11e7de8bd27f234519cfb94348d9c70
 #
+#
+#        TODO:
+#         rdx
+#          contains a function pointer to be registered with `atexit'.
+#          This is how the dynamic linker arranges to have DT_FINI
+#          functions called for shared libraries that have been loaded
+#          before this code runs.
+#             ( see https://elixir.bootlin.com/glibc/glibc-2.40.9000/source/sysdeps/x86_64/start.S )
+#
 
         .text
         .globl  _start
 _start:
+#
+#   %rsp       The stack contains the arguments and environment:
+#
+#               0(%rsp)                         argc
+#               LP_SIZE(%rsp)                   argv[0]
+#               ...
+#               (LP_SIZE*argc)(%rsp)            NULL
+#               (LP_SIZE*(argc+1))(%rsp)        envp[0]
+#               ...
+#                                               NULL
 
      #    xor   %rbp , %rbp     # Is zeroing out RBP recommended somewhere?
 
