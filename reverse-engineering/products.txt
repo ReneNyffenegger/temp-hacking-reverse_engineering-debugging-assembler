@@ -1,0 +1,4 @@
+VB Decompiler / DotFix software
+   Free Lite version https://www.vb-decompiler.org/download.htm
+      "C:\Program Files (x86)\VB Decompiler Lite\VB Decompiler.exe"
+        somewhat disappointing
